@@ -27,6 +27,7 @@
       background-color: #e0f7fa;
       border-radius: 15px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
     }
 
     .stone {
@@ -34,7 +35,8 @@
       height: 50px;
       border-radius: 50%;
       position: absolute;
-      transition: transform 0.5s;
+      animation: fall 2s ease-out forwards;
+      opacity: 0;
     }
 
     #stone1 { background-color: red; }
@@ -43,17 +45,38 @@
     #stone4 { background-color: green; }
     #stone5 { background-color: purple; }
 
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
     .lila {
       width: 80px;
       height: 150px;
       position: absolute;
-      bottom: 0;
+      bottom: -160px;
       background-color: pink;
       border-radius: 20px 20px 0 0;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      animation: slideUp 2s 1s forwards;
+    }
+
+    @keyframes slideUp {
+      0% {
+        bottom: -160px;
+      }
+      100% {
+        bottom: 0;
+      }
     }
 
     .stone-description {
@@ -64,6 +87,13 @@
       font-size: 1.2em;
       color: #333;
       display: none;
+      opacity: 0;
+      animation: fadeIn 1s 3s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
 
     .button {
@@ -84,56 +114,57 @@
 </head>
 <body>
   <div id="scene">
-    <div class="stone" id="stone1" onclick="showEmotion('raiva')"></div>
-    <div class="stone" id="stone2" onclick="showEmotion('tristeza')"></div>
-    <div class="stone" id="stone3" onclick="showEmotion('felicidade')"></div>
-    <div class="stone" id="stone4" onclick="showEmotion('calma')"></div>
-    <div class="stone" id="stone5" onclick="showEmotion('medo')"></div>
+    <div class="stone" id="stone1"></div>
+    <div class="stone" id="stone2"></div>
+    <div class="stone" id="stone3"></div>
+    <div class="stone" id="stone4"></div>
+    <div class="stone" id="stone5"></div>
 
     <div class="lila">
-      <div id="stone-description" class="stone-description">Clique em uma pedra para aprender sobre a emoção!</div>
+      <div id="stone-description" class="stone-description">Clique nas pedras para aprender sobre as emoções!</div>
     </div>
   </div>
 
   <button class="button" onclick="resetScene()">Reiniciar</button>
 
   <script>
-    function showEmotion(emotion) {
-      const description = document.getElementById('stone-description');
+    function startAnimation() {
+      // Animar pedras
       const stones = document.querySelectorAll('.stone');
-      stones.forEach(stone => stone.style.transform = 'scale(1)'); // Reset size
-
-      switch(emotion) {
-        case 'raiva':
-          description.innerHTML = 'A pedra vermelha representa a raiva. Às vezes ficamos com raiva quando as coisas não acontecem do nosso jeito.';
-          document.getElementById('stone1').style.transform = 'scale(1.2)';
-          break;
-        case 'tristeza':
-          description.innerHTML = 'A pedra azul representa a tristeza. Às vezes ficamos tristes quando algo termina ou quando estamos longe de algo.';
-          document.getElementById('stone2').style.transform = 'scale(1.2)';
-          break;
-        case 'felicidade':
-          description.innerHTML = 'A pedra amarela representa a felicidade. Ficamos felizes quando fazemos algo divertido, como brincar com amigos.';
-          document.getElementById('stone3').style.transform = 'scale(1.2)';
-          break;
-        case 'calma':
-          description.innerHTML = 'A pedra verde representa a calma. Quando respiramos fundo e ficamos tranquilos, podemos nos acalmar.';
-          document.getElementById('stone4').style.transform = 'scale(1.2)';
-          break;
-        case 'medo':
-          description.innerHTML = 'A pedra roxa representa o medo. Às vezes ficamos com medo de algo novo, mas podemos sempre pedir ajuda.';
-          document.getElementById('stone5').style.transform = 'scale(1.2)';
-          break;
-      }
-      description.style.display = 'block';
+      stones.forEach((stone, index) => {
+        stone.style.animationDelay = `${index * 0.5}s`; // Delay para as pedras caírem em sequência
+      });
+      
+      // Animar Lila
+      const lila = document.querySelector('.lila');
+      lila.style.animation = 'slideUp 2s 1s forwards';
+      
+      // Exibir descrição após a animação
+      setTimeout(() => {
+        const description = document.getElementById('stone-description');
+        description.style.display = 'block';
+      }, 3000);
     }
 
     function resetScene() {
-      const description = document.getElementById('stone-description');
+      // Resetando a animação e reiniciando
       const stones = document.querySelectorAll('.stone');
-      stones.forEach(stone => stone.style.transform = 'scale(1)'); // Reset size
+      stones.forEach(stone => {
+        stone.style.animation = 'none'; // Remove a animação
+        stone.offsetHeight; // Força uma re-renderização
+        stone.style.animation = ''; // Reseta a animação
+      });
+      
+      const description = document.getElementById('stone-description');
       description.style.display = 'none';
+      
+      // Reinicia a animação
+      setTimeout(() => {
+        startAnimation();
+      }, 100);
     }
+
+    window.onload = startAnimation; // Inicia a animação quando a página carregar
   </script>
 </body>
 </html>
