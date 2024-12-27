@@ -43,6 +43,10 @@
             background-color: #cccccc;
             cursor: not-allowed;
         }
+        .story-button .lock-icon {
+            margin-left: 10px;
+            font-size: 16px;
+        }
         .story-container {
             display: flex;
             flex-wrap: wrap;
@@ -66,9 +70,9 @@
         <button class="story-button" onclick="navigateTo('emocao.html')">Reconhecimento de Emoções</button>
         <button class="story-button" onclick="navigateTo('social.html')">Interações Sociais</button>
         <button class="story-button" onclick="navigateTo('escola.html')">Se Arrumando para a Escola</button>
-        <button class="story-button disabled" onclick="showComingSoon()">História em Breve</button>
-        <button class="story-button disabled" onclick="showComingSoon()">História em Breve</button>
-        <button class="story-button disabled" onclick="showComingSoon()">História em Breve</button>
+        <button class="story-button disabled" onclick="showComingSoon()">História em Breve <span class="lock-icon">🔒</span></button>
+        <button class="story-button disabled" onclick="showComingSoon()">História em Breve <span class="lock-icon">🔒</span></button>
+        <button class="story-button disabled" onclick="showComingSoon()">História em Breve <span class="lock-icon">🔒</span></button>
     </div>
 
     <footer>
@@ -97,6 +101,17 @@
         // Define a opacidade inicial para o efeito de entrada
         document.body.style.opacity = '0';
         document.body.style.transition = 'opacity 0.5s';
+
+        // Teclas de navegação (exemplo)
+        window.addEventListener('keydown', (event) => {
+            if (event.key === '1') {
+                navigateTo('emocao.html');
+            } else if (event.key === '2') {
+                navigateTo('social.html');
+            } else if (event.key === '3') {
+                navigateTo('escola.html');
+            }
+        });
     </script>
 </body>
 </html>
