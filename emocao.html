@@ -1,114 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórias Interativas</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', Arial, sans-serif;
-            background-color: #f4f9ff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        header {
-            background-color: #6c63ff;
-            color: white;
-            padding: 20px;
-        }
-        header h1 {
-            font-size: 36px;
-        }
-        .story-button {
-            display: inline-block;
-            width: 80%;
-            max-width: 300px;
-            margin: 15px;
-            padding: 15px;
-            font-size: 18px;
-            color: white;
-            background-color: #6c63ff;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            position: relative;
-        }
-        .story-button:hover {
-            background-color: #574fd6;
-            transform: scale(1.05);
-        }
-        .story-button svg {
-            width: 40px;
-            height: 40px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .story-button.animate svg {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.5);
-        }
-        .story-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px;
-        }
-        footer {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Aventura de Lila e o Arco-Íris das Emoções</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    
+    #scene {
+      width: 80vw;
+      height: 60vh;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #e0f7fa;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .stone {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      transition: transform 0.5s;
+    }
+
+    #stone1 { background-color: red; }
+    #stone2 { background-color: blue; }
+    #stone3 { background-color: yellow; }
+    #stone4 { background-color: green; }
+    #stone5 { background-color: purple; }
+
+    .lila {
+      width: 80px;
+      height: 150px;
+      position: absolute;
+      bottom: 0;
+      background-color: pink;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .stone-description {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.2em;
+      color: #333;
+      display: none;
+    }
+
+    .button {
+      background-color: #ff4081;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .button:hover {
+      background-color: #e30057;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Histórias Interativas</h1>
-        <p>Escolha sua história e comece a aventura!</p>
-    </header>
+  <div id="scene">
+    <div class="stone" id="stone1" onclick="showEmotion('raiva')"></div>
+    <div class="stone" id="stone2" onclick="showEmotion('tristeza')"></div>
+    <div class="stone" id="stone3" onclick="showEmotion('felicidade')"></div>
+    <div class="stone" id="stone4" onclick="showEmotion('calma')"></div>
+    <div class="stone" id="stone5" onclick="showEmotion('medo')"></div>
 
-    <div class="story-container">
-        <button class="story-button" onclick="animateButton(this, 'emocao.html')">
-            Reconhecimento de Emoções
-            <!-- SVG para mostrar uma emoção (exemplo: rosto sorridente) -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="yellow"/>
-                <circle cx="35" cy="40" r="5" fill="black"/>
-                <circle cx="65" cy="40" r="5" fill="black"/>
-                <path d="M30 60 Q50 80 70 60" stroke="black" stroke-width="3" fill="transparent"/>
-            </svg>
-        </button>
+    <div class="lila">
+      <div id="stone-description" class="stone-description">Clique em uma pedra para aprender sobre a emoção!</div>
     </div>
+  </div>
 
-    <footer>
-        <p>Mais histórias estarão disponíveis em breve. Fique ligado!</p>
-    </footer>
+  <button class="button" onclick="resetScene()">Reiniciar</button>
 
-    <script>
-        function animateButton(button, page) {
-            // Adiciona a animação no botão
-            button.classList.add('animate');
+  <script>
+    function showEmotion(emotion) {
+      const description = document.getElementById('stone-description');
+      const stones = document.querySelectorAll('.stone');
+      stones.forEach(stone => stone.style.transform = 'scale(1)'); // Reset size
 
-            // Transição de página após a animação
-            setTimeout(() => {
-                window.location.href = page;
-            }, 800); // A animação dura 0.8 segundos
-        }
+      switch(emotion) {
+        case 'raiva':
+          description.innerHTML = 'A pedra vermelha representa a raiva. Às vezes ficamos com raiva quando as coisas não acontecem do nosso jeito.';
+          document.getElementById('stone1').style.transform = 'scale(1.2)';
+          break;
+        case 'tristeza':
+          description.innerHTML = 'A pedra azul representa a tristeza. Às vezes ficamos tristes quando algo termina ou quando estamos longe de algo.';
+          document.getElementById('stone2').style.transform = 'scale(1.2)';
+          break;
+        case 'felicidade':
+          description.innerHTML = 'A pedra amarela representa a felicidade. Ficamos felizes quando fazemos algo divertido, como brincar com amigos.';
+          document.getElementById('stone3').style.transform = 'scale(1.2)';
+          break;
+        case 'calma':
+          description.innerHTML = 'A pedra verde representa a calma. Quando respiramos fundo e ficamos tranquilos, podemos nos acalmar.';
+          document.getElementById('stone4').style.transform = 'scale(1.2)';
+          break;
+        case 'medo':
+          description.innerHTML = 'A pedra roxa representa o medo. Às vezes ficamos com medo de algo novo, mas podemos sempre pedir ajuda.';
+          document.getElementById('stone5').style.transform = 'scale(1.2)';
+          break;
+      }
+      description.style.display = 'block';
+    }
 
-        // Efeito de entrada suave ao carregar a página
-        window.onload = () => {
-            document.body.style.opacity = '1';
-        };
-
-        // Define a opacidade inicial para o efeito de entrada
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.5s';
-    </script>
+    function resetScene() {
+      const description = document.getElementById('stone-description');
+      const stones = document.querySelectorAll('.stone');
+      stones.forEach(stone => stone.style.transform = 'scale(1)'); // Reset size
+      description.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
