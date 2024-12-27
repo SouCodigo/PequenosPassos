@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórias Interativas</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+            background-color: #f4f9ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #6c63ff;
+            color: white;
+            padding: 20px;
+        }
+        header h1 {
+            font-size: 36px;
+        }
+        .story-button {
+            display: inline-block;
+            width: 80%;
+            max-width: 300px;
+            margin: 15px;
+            padding: 15px;
+            font-size: 18px;
+            color: white;
+            background-color: #6c63ff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            position: relative;
+        }
+        .story-button:hover {
+            background-color: #574fd6;
+            transform: scale(1.05);
+        }
+        .story-button svg {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .story-button.animate svg {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+        .story-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+        footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Histórias Interativas</h1>
+        <p>Escolha sua história e comece a aventura!</p>
+    </header>
+
+    <div class="story-container">
+        <button class="story-button" onclick="animateButton(this, 'emocao.html')">
+            Reconhecimento de Emoções
+            <!-- SVG para mostrar uma emoção (exemplo: rosto sorridente) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="yellow"/>
+                <circle cx="35" cy="40" r="5" fill="black"/>
+                <circle cx="65" cy="40" r="5" fill="black"/>
+                <path d="M30 60 Q50 80 70 60" stroke="black" stroke-width="3" fill="transparent"/>
+            </svg>
+        </button>
+    </div>
+
+    <footer>
+        <p>Mais histórias estarão disponíveis em breve. Fique ligado!</p>
+    </footer>
+
+    <script>
+        function animateButton(button, page) {
+            // Adiciona a animação no botão
+            button.classList.add('animate');
+
+            // Transição de página após a animação
+            setTimeout(() => {
+                window.location.href = page;
+            }, 800); // A animação dura 0.8 segundos
+        }
+
+        // Efeito de entrada suave ao carregar a página
+        window.onload = () => {
+            document.body.style.opacity = '1';
+        };
+
+        // Define a opacidade inicial para o efeito de entrada
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s';
+    </script>
+</body>
+</html>
